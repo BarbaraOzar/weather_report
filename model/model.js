@@ -1,5 +1,3 @@
-const h = require('../util/helper.js')
-
 const equals = (...keys) => x => y => [].concat(...keys).every(k => (x[k] === null && y[k] === null) || (x[k].equals && x[k].equals(y[k]) || x[k] === y[k]))
 
 const with_equals = (...keys) => o => Object.assign({}, o, {equals: equals(...keys)(o)})
