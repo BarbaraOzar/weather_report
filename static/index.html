@@ -24,26 +24,30 @@
   <script>
       const updater = id => update(document.getElementById(id))
 
-      const fetch_for = city => {
+      const fetch_for = (city, callback) => {
         const request = new XMLHttpRequest()
         request.open('GET', `http://localhost:8080/data/${city}`)
         request.onload = () => {
           const data = JSON.parse(request.responseText)
           request.open('GET', `http://localhost:8080/forecast/${city}`)
-          request.onload= () => {
-              const forecast = JSON.parse(request.responseText)
-              const model = digest({ data, forecast })
-              updater(city)(view(city, model))
-            }
+          request.onload = () => {
+            const forecast = JSON.parse(request.responseText)
+            callback(city, data, forecast)
+          }
           request.send()
         }
         request.send()
       }
-              
+      
+      const my_callback = (city, data, forecast) => {
+        const model = digest({ data, forecast })
+        updater(city)(view(city, model))
+      }
+
       async function init() {
-         fetch_for('Horsens')
-         fetch_for('Aarhus')
-         fetch_for('Copenhagen')
+         fetch_for('Horsens', my_callback)
+         fetch_for('Aarhus', my_callback)
+         fetch_for('Copenhagen', my_callback)
       }
     
     </script>

@@ -5,19 +5,23 @@ function view(city, model) {
         return table(null, 
             thead(null, null, tr(null, null, td(null, "Type"), td(null, "Value"), td(null, "Unit"), td(null, "Time"))),
             tbody(null, null, ...data.map(d => {
-                return tr(null, null, 
-                    td(null, null, d.type),
-                    td(null, null, d.value),
-                    td(null, null, d.unit),
-                    td(null, null, new Date(d.time).toDateString())
-                    )
-                })
+                if (!d) {
+                    return 'no data found'
+                }
+                else
+                    return tr(null, null, 
+                        td(null, null, d.type),
+                        td(null, null, d.value),
+                        td(null, null, d.unit),
+                        td(null, null, new Date(d.time).toDateString())
+                        )
+                    })
             )
         )
     }    
 
     function display_temperature(data) {
-        return `${data.value} ${data.unit} on ${new Date(data.time).toDateString()}`
+        return data ? `${data.value} ${data.unit} on ${new Date(data.time).toDateString()}` : 'no data found'
     }
 
     function display_value(data) {
